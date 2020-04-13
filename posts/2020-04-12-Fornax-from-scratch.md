@@ -3,7 +3,7 @@ layout: post
 title: Building up fornax from scratch
 author: @recumbent
 tags: how-to
-published: 2020-03-27
+published: 2020-04-12
 ---
 # Setting up fornax from scratch
 
