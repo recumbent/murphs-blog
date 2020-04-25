@@ -1,6 +1,7 @@
 #r "../_lib/Fornax.Core.dll"
 #r "../_lib/Markdig.dll"
 
+open System
 open Markdig
 
 type PostConfig = {
@@ -17,6 +18,16 @@ type Post = {
     content: string
 }
 
+type YearIndex = {
+    file: string
+    year: int
+}
+
+type MonthIndex = {
+    file: string
+    year: int
+    month: int
+}
 
 let markdownPipeline =
     MarkdownPipelineBuilder()
@@ -94,12 +105,44 @@ let loadFile n =
       tags = tags
       content = content }
 
+let processYearIndex (siteContent: SiteContents) (date: DateTime) =
+    let yearExists = 
+        siteContent.TryGetValues<YearIndex>() 
+        |> Option.defaultValue Seq.empty
+        |> Seq.exists (fun yi -> yi.year = date.Year)
+
+    if (not yearExists) then 
+        let yi: YearIndex = { file = (sprintf "%04i/index.html" date.Year); year = date.Year}
+        siteContent.Add yi
+
+let processMonthIndex (siteContent: SiteContents) (date: DateTime) =
+    let monthExists = 
+        siteContent.TryGetValues<MonthIndex>()
+        |> Option.defaultValue Seq.empty
+        |> Seq.exists (fun mi -> mi.year = date.Year && mi.month = date.Month)
+
+    if (not monthExists) then 
+        let mi: MonthIndex = { file = (sprintf "%04i/%02i/index.html" date.Year date.Month); year = date.Year; month = date.Month}
+        siteContent.Add mi
+        printfn "Adding month: %4i-%02i" date.Year date.Month
+
+// So not functional... side effects all day...
+let processPost (siteContent: SiteContents) (post: Post) =
+    siteContent.Add post
+
+    match post.published with
+    | Some date -> 
+        processYearIndex siteContent date
+        processMonthIndex siteContent date
+    | None -> ()
+    
+
 let loader (projectRoot: string) (siteContent: SiteContents) =
     let postsPath = System.IO.Path.Combine(projectRoot, "posts")
     System.IO.Directory.GetFiles postsPath
     |> Array.filter (fun n -> n.EndsWith ".md")
     |> Array.map loadFile
-    |> Array.iter (fun p -> siteContent.Add p)
+    |> Array.iter (fun p -> processPost siteContent p)
 
     siteContent.Add({disableLiveRefresh = true})
     siteContent

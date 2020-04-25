@@ -30,6 +30,8 @@ let staticPredicate (projectRoot: string, page: string) =
 let config = {
     Generators = [
         { Script = "post.fsx"; Trigger = OnFilePredicate postPredicate; OutputFile = ChangeExtension "html" }
+        { Script = "yearindex.fsx"; Trigger = Once; OutputFile = MultipleFiles (sprintf "posts/%s/index.html") }
+        { Script = "monthindex.fsx"; Trigger = Once; OutputFile = MultipleFiles (sprintf "posts/%s/index.html") }
         { Script = "staticfile.fsx"; Trigger = OnFilePredicate staticPredicate; OutputFile = SameFileName }
         { Script = "index.fsx"; Trigger = Once; OutputFile = NewFileName "index.html" }
     ]

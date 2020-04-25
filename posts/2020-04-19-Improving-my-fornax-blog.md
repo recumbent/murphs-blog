@@ -81,6 +81,6 @@ type MonthIndex = {
 
 There are probably better ways to do this, but this is a place to start
 
-Next step is to add those into the site content as needed
+Next step is to add those into the site content as needed - when we load a post add the year and the month if we haven't got them already:
 
 ```fsharp
