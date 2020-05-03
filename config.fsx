@@ -22,9 +22,7 @@ let staticPredicate (projectRoot: string, page: string) =
         page.Contains ".git" ||
         page.Contains ".ionide" ||
         page.Contains ".vs" ||
-        ext = ".fsx" ||
-        ext = ".png" ||
-        ext = ".ico"
+        ext = ".fsx"
     )
  
 let config = {
