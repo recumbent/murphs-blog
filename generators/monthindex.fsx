@@ -9,17 +9,15 @@ let generateMonth (ctx : SiteContents) (month: Postloader.MonthIndex) =
         let date = Option.defaultValue DateTime.MinValue date
         date.Year = year && date.Month = month
 
-    let published (post: Postloader.Post) =
-        post.published
-        |> Option.defaultValue System.DateTime.Now
-        |> fun n -> n.ToString("yyyy-MM-dd")
-
     let posts = 
         ctx.TryGetValues<Postloader.Post> () 
         |> Option.defaultValue Seq.empty
         |> Seq.filter (fun p -> filter month.year month.month p.published)
 
-    printfn "Posts: %i" (Seq.length posts)
+    let published (post: Postloader.Post) =
+        post.published
+        |> Option.defaultValue System.DateTime.MinValue
+        |> fun n -> n.ToString("yyyy-MM-dd")
 
     let postList =
         posts
@@ -31,15 +29,9 @@ let generateMonth (ctx : SiteContents) (month: Postloader.MonthIndex) =
             ]
         )
 
-    //let postList = [ 
-    //    li [] [!! "I am a test entry in a list"]
-    //]
-
-    let title = (sprintf "%04i-%02i" month.year month.month)
+    let title = sprintf "%04i-%02i" month.year month.month
     let name =  sprintf "%04i/%02i" month.year month.month
     
-    printfn "Generating %s" title
-
     let monthContent = Layout.layout ctx title  [
         section [] [
             h2 [] [!! (sprintf "Posts for %s" title)]
