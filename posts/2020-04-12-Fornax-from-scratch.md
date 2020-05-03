@@ -4,7 +4,15 @@ title: Building up fornax from scratch
 author: @recumbent
 tags: how-to
 published: 2020-04-12
+updated: 2020-05-02
 ---
+
+<hr/>
+
+This was written for fornax [0.11.0](https://github.com/ionide/Fornax/releases/tag/0.11.0) - the binary file problem has a neater solution now detailed here: (better binary file handling)[/posts/2020-05-03-Better-binary-file-handling]
+
+<hr/>
+
 # Setting up fornax from scratch
 
 I like F#, I want a static site generator - so as I write this there is an obvious answer to address my needs: [Fornax](https://github.com/ionide/Fornax) - easy right? Well... maybe and then again maybe not.
