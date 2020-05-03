@@ -124,7 +124,6 @@ let processMonthIndex (siteContent: SiteContents) (date: DateTime) =
     if (not monthExists) then 
         let mi: MonthIndex = { file = (sprintf "%04i/%02i/index.html" date.Year date.Month); year = date.Year; month = date.Month}
         siteContent.Add mi
-        printfn "Adding month: %4i-%02i" date.Year date.Month
 
 // So not functional... side effects all day...
 let processPost (siteContent: SiteContents) (post: Post) =

@@ -46,8 +46,6 @@ let generate' (ctx : SiteContents) (page: string) =
         ctx.TryGetValues<Postloader.MonthIndex> ()
         |> Option.defaultValue Seq.empty
 
-    printfn "Months: %i" (Seq.length months)
-
     months 
     |> Seq.map (generateMonth ctx) 
     |> Seq.toList
