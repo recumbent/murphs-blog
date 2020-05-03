@@ -3,8 +3,9 @@ layout: post
 title: Improving my fornax blog
 author: @recumbent
 tags: how-to fornax f#
-published: 2020-05-03
+published: 2020-05-02
 ---
+
 # Improving my fornax blog
 
 The most obvious problem I have at the moment is aesthetics - this site could look better (and the content needs to be better presented on the home page). But of course that's not actually the thing that bothers me most.
