@@ -9,7 +9,7 @@ updated: 2020-05-02
 
 <hr/>
 
-This was written for fornax [0.11.0](https://github.com/ionide/Fornax/releases/tag/0.11.0) - the binary file problem has a neater solution now detailed here: (better binary file handling)[/posts/2020-05-03-Better-binary-file-handling]
+This was written for fornax [0.11.0](https://github.com/ionide/Fornax/releases/tag/0.11.0) - the binary file problem has a neater solution now detailed here: [better binary file handling](/posts/2020-05-03-Better-binary-file-handling-in-my-fornax-blog.html)
 
 <hr/>
 
