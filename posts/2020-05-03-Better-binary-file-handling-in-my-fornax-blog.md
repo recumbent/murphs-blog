@@ -6,8 +6,6 @@ tags: how-to
 published: 2020-05-03
 ---
 
-# Better binary file handing in my fornax blog
-
 I built my blog - and wrote my first post - using [Fornx](https://github.com/ionide/fornax) v0.11.0 and had to get a bit creative to copy binary files (the favicon).
 
 This was addressed in [0.12.0](https://github.com/ionide/Fornax/releases/tag/0.12.0) by allowing the core code to output a byte array instead of lines of text (the changes are in this commit: [Allow generate to return a byte array](https://github.com/ionide/Fornax/commit/b4a575a651ce75e7805834de40263f457e3b7f4c#diff-7cb9fd4a13259bde5ff5e815d2456368L310)).

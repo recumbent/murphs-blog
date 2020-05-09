@@ -4,7 +4,6 @@ title: A place to start
 author: @recumbent
 published: 2020-04-11
 ---
-# A Place to start
 
 I have been failing to get anything like a blog into the wild for, well, more years than I care to remember.
 

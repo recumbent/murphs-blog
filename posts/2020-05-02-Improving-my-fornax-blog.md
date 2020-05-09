@@ -6,8 +6,6 @@ tags: how-to fornax f#
 published: 2020-05-02
 ---
 
-# Improving my fornax blog
-
 The most obvious problem I have at the moment is aesthetics - this site could look better (and the content needs to be better presented on the home page). But of course that's not actually the thing that bothers me most.
 
 I have views on what I want the structure of the site to be, and the structure I have is nowhere near and whilst I can (and will) add content and I can (and will) improve the appearence getting the structure right bothers me.

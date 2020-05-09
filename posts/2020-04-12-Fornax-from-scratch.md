@@ -13,8 +13,6 @@ This was written for fornax [0.11.0](https://github.com/ionide/Fornax/releases/t
 
 <hr/>
 
-# Setting up fornax from scratch
-
 I like F#, I want a static site generator - so as I write this there is an obvious answer to address my needs: [Fornax](https://github.com/ionide/Fornax) - easy right? Well... maybe and then again maybe not.
 
 ## Why not?
