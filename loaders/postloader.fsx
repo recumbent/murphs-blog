@@ -33,6 +33,7 @@ let markdownPipeline =
     MarkdownPipelineBuilder()
         .UsePipeTables()
         .UseGridTables()
+        .UseEmphasisExtras()
         .Build()
 
 let isSeparator (input : string) =
