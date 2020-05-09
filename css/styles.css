@@ -36,3 +36,7 @@ code.hljs {
     font-size: larger;
     color: whitesmoke;
 }
+
+.title-meta {
+    font-size: smaller;
+}

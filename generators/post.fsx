@@ -21,32 +21,18 @@ let generate' (ctx : SiteContents) (page: string) =
         |> Option.defaultValue System.DateTime.Now
         |> fun n -> n.ToString("yyyy-MM-dd")
 
+    let titleBlock = div [] [
+        h1 [] [!! post.title]
+        span [Class "title-meta"] [!! (sprintf "Author: %s, published: %s, tags: %A" (post.author |> Option.defaultValue "unknown") (published post) post.tags)]
+    ]
+    
     Layout.layout ctx post.title [
         section [] [
-            div [] [
-                div [] [
-                    h1 [] [!!desc]
-                ]
-            ]
+            titleBlock
         ]
-        div [] [
-            section [] [
-                div [] [
-                    div [] [
-                        div [] [
-                            div [] [
-                                p [] [ a [Href post.link] [!! post.title]]
-                                p [] [
-                                a [Href "#"] [!! (defaultArg post.author "")]
-                                !! (sprintf "on %s" (published post))
-                                ]
-                            ]
-                            article [] [
-                                !! post.content
-                            ]
-                        ]
-                    ]
-                ]
+        section [] [
+            article [] [
+                !! post.content
             ]
         ]
     ]
