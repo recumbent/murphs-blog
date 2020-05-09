@@ -38,10 +38,26 @@ let layout (ctx : SiteContents) active bodyContent =
         ]
         body [] [
             header [] [
-              h1 [] [!! "Murph's Blog!"]
-              a [Href "/"][!! "Home"]
-            ] 
-            yield! bodyContent
+              section [Class "hero"] [
+                div [Class "content hero-title"] [!! "Murph's random witterings"]
+              ]
+              nav [Class "content"] [
+                a [Href "/"][!! "Home"]
+                span [] [!! " | "]
+                a [Href "/posts"][!! "Archive"]
+                span [] [!! " | "]
+                a [Href "/tags.html"][!! "Tags"]
+                span [] [!! " | "]
+                a [Href "/about.html"][!! "About"]
+              ]
+            ]
+            section [Class "content"] [
+              yield! bodyContent
+            ]
+            footer [Class "content"] [
+              hr []
+              p [] [!! (sprintf "Copyright 2020-%i James Murphy" System.DateTime.Today.Year)]              
+            ]
         ]
     ]
 
@@ -50,4 +66,4 @@ let render (ctx : SiteContents) content =
   content
   |> HtmlElement.ToString
   |> fun n -> if disableLiveRefresh then n else injectWebsocketCode n
-  
+   

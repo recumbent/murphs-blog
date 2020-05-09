@@ -3,6 +3,9 @@
 
 body {
     font-family: 'Muli',sans-serif;
+}
+
+.content {
     margin: 0 auto;
     max-width: 50em;
 }
@@ -17,4 +20,19 @@ code {
 
 code.hljs {
     font-size: small
+}
+
+.hero
+{
+    background-image: url('/images/header-full.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 300px;
+}
+
+.hero-title {
+    font-family: 'Orbitron', sans-serif;   
+    font-size: larger;
+    color: whitesmoke;
 }
