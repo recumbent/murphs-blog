@@ -14,8 +14,20 @@ h1, h2, h3, h4 {
     font-family: 'Orbitron', sans-serif;
 }
 
+h1 {
+    font-size: xx-large;
+}
+
+/* TODO: Should this be set on the containing block? */
+h1.titleblock {
+    margin-bottom: 4px; /* So that the meta data is tucked neatly under */
+}
+
 code {
     font-family: 'Fira Mono', monospace;
+    background-color: #eee;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 code.hljs {

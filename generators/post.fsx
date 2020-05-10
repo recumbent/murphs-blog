@@ -22,7 +22,7 @@ let generate' (ctx : SiteContents) (page: string) =
         |> fun n -> n.ToString("yyyy-MM-dd")
 
     let titleBlock = div [] [
-        h1 [] [!! post.title]
+        h1 [Class "titleblock"] [!! post.title]
         span [Class "title-meta"] [!! (sprintf "Author: %s, published: %s, tags: %A" (post.author |> Option.defaultValue "unknown") (published post) post.tags)]
     ]
     
