@@ -14,4 +14,4 @@ Fonts used:
 * [Orbitron](https://fonts.google.com/specimen/Orbitron)
 * [Muli](https://fonts.google.com/specimen/Muli)
 
-Hero image is Photo by [Tyler van der Hoeven](https://unsplash.com/@tyvdh?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/)
+Hero image is by [Tyler van der Hoeven](https://unsplash.com/@tyvdh?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/)
