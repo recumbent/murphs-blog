@@ -32,5 +32,8 @@ let config = {
         { Script = "yearindex.fsx"; Trigger = Once; OutputFile = MultipleFiles (sprintf "posts/%s/index.html") }
         { Script = "staticfile.fsx"; Trigger = OnFilePredicate staticPredicate; OutputFile = SameFileName }
         { Script = "index.fsx"; Trigger = Once; OutputFile = NewFileName "index.html" }
+        { Script = "about.fsx"; Trigger = Once; OutputFile = NewFileName "about.html" }
+        { Script = "archive.fsx"; Trigger = Once; OutputFile = NewFileName "posts/index.html" }
+        { Script = "taglist.fsx"; Trigger = Once; OutputFile = NewFileName "tags/index.html"}
     ]
 }

@@ -46,7 +46,7 @@ let layout (ctx : SiteContents) active bodyContent =
                 span [] [!! " | "]
                 a [Href "/posts"][!! "Archive"]
                 span [] [!! " | "]
-                a [Href "/tags.html"][!! "Tags"]
+                a [Href "/tags"][!! "Tags"]
                 span [] [!! " | "]
                 a [Href "/about.html"][!! "About"]
               ]
