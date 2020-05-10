@@ -6,7 +6,7 @@ tags: how-to
 published: 2020-05-03
 ---
 
-I built my blog - and wrote my first post - using [Fornx](https://github.com/ionide/fornax) v0.11.0 and had to get a bit creative to copy binary files (the favicon).
+I built my blog - and wrote my first post - using [Fornax](https://github.com/ionide/fornax) v0.11.0 and had to get a bit creative to copy binary files (the favicon).
 
 This was addressed in [0.12.0](https://github.com/ionide/Fornax/releases/tag/0.12.0) by allowing the core code to output a byte array instead of lines of text (the changes are in this commit: [Allow generate to return a byte array](https://github.com/ionide/Fornax/commit/b4a575a651ce75e7805834de40263f457e3b7f4c#diff-7cb9fd4a13259bde5ff5e815d2456368L310)).
 
@@ -21,14 +21,14 @@ dotnet tool update --local fornax
 ```
 That done you can see what version is installed using `dotnet fornax version` (at time of typing 0.13.1)
 
-The next thing is to copy the .dll's to the bin folder. Because nuget packages are cached globally you'll need to go find them - these are in a folder underneath your user:
+The next thing is to copy the .dll's to the project. Because nuget packages are cached globally you'll need to go find them - these are in a folder underneath your user:
 
 * Windows `%userprofile%\.nuget\packages`
 * Mac/Linux: `~/.nuget/packages`
 
 So on my machine, for this version, I want to copy `C:\Users\james\.nuget\packages\fornax\0.13.1\tools\netcoreapp3.1\any\Fornax.Core.dll` and `C:\Users\james\.nuget\packages\fornax\0.13.1\Fornax.Template\_lib\Markdig.dll` to the `_lib` folder in the root of my blog.
 
-n.b. in F# 5 scripts will be able to reference packages directly from nuget as follows: `#r "nuget: Newtonsoft.Json"` at which point the _lib folder will be redundant.
+_n.b. in F# 5 scripts will be able to reference packages directly from nuget as follows: `#r "nuget: Newtonsoft.Json"` at which point the `_lib` folder will be redundant._
 
 At this point I would do a clean and a build or a watch to make sure everything still works as expected and then commit the changes...
 
