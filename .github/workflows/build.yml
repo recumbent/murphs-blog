@@ -21,4 +21,11 @@ jobs:
       run: dotnet tool restore
     - name: Build
       run: dotnet fornax build
+    - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+      with:
+        source_dir: '_public'
+        container_name: '$web'
+        connection_string: ${{ secrets.ConnectionString }}
+        sync: true
+      
       
