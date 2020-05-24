@@ -1,4 +1,5 @@
 ---
+published: 2020-05-24
 layout: post
 title: Disappearing down the rabbit hole
 author: @recumbent
