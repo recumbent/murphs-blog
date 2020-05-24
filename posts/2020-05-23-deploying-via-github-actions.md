@@ -1,9 +1,10 @@
 ---
 layout: post
-title: deploying-this-blog-via-github-actions
+title: Deploying this blog via github actions
 author: @recumbent
 tags: github actions, fornax, azure, how to
 published: 2020-05-23
+updated: 2020-05-24
 ---
 
 As a rule, the very first thing I would do for a given project is set up the end to end pipeline to build, test, and deploy a "hello world!" implementation to production (if you have dev/test/staging environments then this should be the full pipeline with quality gates as needed). This is often described as a "pathfinder" release and once created ensures that you can iterate on the project quickly deploying as you go.
@@ -52,11 +53,11 @@ Time for some useable "stuff"
 
 Github offers a guided experience for setting up actions - if you go to the repo and click on the action tab here:
 
-![Action tab in github repository](//images/github-actions/actions-001.png)
+![Action tab in github repository](/images/github-actions/actions-001.png)
 
 This prompted me with this:
 
-![Get started with GitHub Actions](//images/github-actions/actions-002.png)
+![Get started with GitHub Actions](/images/github-actions/actions-002.png)
 
 Which looked _close enough_ to give me a place to start - so I clicked on "Set up this workflow" and that gave me an editor with this "wall of yaml":
 
@@ -92,15 +93,15 @@ Now I've done a lot of work with (CircleCI)[https://circleci.com] which means I'
 
 Checkout - yup, setup .NET core - yup, we have a file so we'll start by saving it, I changed the name to `build.yml` here:
 
-![Name github action](//images/github-actions/actions-003.png)
+![Name github action](/images/github-actions/actions-003.png)
 
 And then commited the file by pushing the big green `Start Commit` button toward the top right of the ui:
 
-![Start commit dialog](//images/github-actions/actions-004.png)
+![Start commit dialog](/images/github-actions/actions-004.png)
 
 And... that not only saves the workflow, it also runs it...
 
-![Start commit dialog](//images/github-actions/actions-005.png)
+![Start commit dialog](/images/github-actions/actions-005.png)
 
 And thirty-some seconds later it fails - which is probably reasonable...
 
@@ -158,11 +159,11 @@ That in turn means that I need AzCopy in my action - I'm not the first person to
 
 The yaml file that defines the action is now part of the repo: `.github\workflows\build.yml` so I could edit it on my machine, but if I use the editor in github I get more help so I'll do that - if I navigate to the file in github [build.yml](https://github.com/recumbent/murphs-blog/blob/master/.github/workflows/build.yml) and click on the pencil to edit:
 
-![Github edit icon](//images/github-actions/actions-006.png)
+![Github edit icon](/images/github-actions/actions-006.png)
 
 I not only get an editor, I also get the ability to search the marketplace for actions:
 
-![Search marketplace tab](//images/github-actions/actions-007.png)
+![Search marketplace tab](/images/github-actions/actions-007.png)
 
 Typing blob into the search gives me lots of options - the first of which was [Azure Blob Storage Upload](https://github.com/marketplace/actions/azure-blob-storage-upload) the second example shows uploading a hugo static site... close enough - lets run with that!
 
@@ -215,7 +216,7 @@ So in summary:
 1. Github actions offers a low friction CI/CD option for projects in github
 1. We can take advantage of the work of others to perfom trickier steps (in this case someone else has done the work to copy files to blob storage)
 1. We can keep secrets safe
-1. There is always a better way 😁
+1. There is always a better way 🤔
 
 
 
