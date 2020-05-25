@@ -62,8 +62,9 @@ let layout (ctx : SiteContents) active bodyContent =
     ]
 
 let render (ctx : SiteContents) content =
-  let disableLiveRefresh = ctx.TryGetValue<Postloader.PostConfig> () |> Option.map (fun n -> n.disableLiveRefresh) |> Option.defaultValue false
   content
   |> HtmlElement.ToString
-  |> fun n -> if disableLiveRefresh then n else injectWebsocketCode n
+#if WATCH
+  |> injectWebsocketCode
+#endif
    
