@@ -6,7 +6,11 @@ open System.IO
 let postPredicate (projectRoot: string, page: string) =
     let fileName = Path.Combine(projectRoot, page)
     let ext = Path.GetExtension page
+#if !WATCH
+    if not (page.Contains "drafts") && ext = ".md" then
+#else 
     if ext = ".md" then
+#endif
         let ctn = File.ReadAllText fileName
         ctn.Contains("layout: post")
     else
@@ -22,7 +26,9 @@ let staticPredicate (projectRoot: string, page: string) =
         page.Contains ".git" ||
         page.Contains ".ionide" ||
         page.Contains ".vs" ||
-        ext = ".fsx"
+        page.Contains "drafts" ||
+        ext = ".fsx" ||
+        ext = ".wsp"
     )
  
 let config = {
