@@ -1,6 +1,7 @@
 #r "_lib/Fornax.Core.dll"
 
 open Config
+open System
 open System.IO
 
 let postPredicate (projectRoot: string, page: string) =
@@ -30,16 +31,30 @@ let staticPredicate (projectRoot: string, page: string) =
         ext = ".fsx" ||
         ext = ".wsp"
     )
- 
+
+let makePostPath (date : string) title =
+    let dateParts = date.Split '-'
+    let newPath = sprintf "%s/%s/%s/%s" dateParts.[0] dateParts.[1] dateParts.[2] title
+    Path.ChangeExtension (newPath, "html" )
+    
+let postRename page =
+    printfn "Renaming: %s" page
+    let elements = page.ToLower().Split '/'
+    let root = elements.[0]
+    match root with
+    | "posts" -> makePostPath (elements.[1].Substring(0, 10)) (elements.[1].Substring(11))
+    | _ -> makePostPath (DateTime.Today.ToString("yyyy-MM-dd")) elements.[1]    
+    
+
 let config = {
     Generators = [
-        { Script = "post.fsx"; Trigger = OnFilePredicate postPredicate; OutputFile = ChangeExtension "html" }
-        { Script = "monthindex.fsx"; Trigger = Once; OutputFile = MultipleFiles (sprintf "posts/%s/index.html") }
-        { Script = "yearindex.fsx"; Trigger = Once; OutputFile = MultipleFiles (sprintf "posts/%s/index.html") }
+        { Script = "post.fsx"; Trigger = OnFilePredicate postPredicate; OutputFile = Custom postRename }
+        { Script = "monthindex.fsx"; Trigger = Once; OutputFile = MultipleFiles (sprintf "%s/index.html") }
+        { Script = "yearindex.fsx"; Trigger = Once; OutputFile = MultipleFiles (sprintf "%s/index.html") }
         { Script = "staticfile.fsx"; Trigger = OnFilePredicate staticPredicate; OutputFile = SameFileName }
         { Script = "index.fsx"; Trigger = Once; OutputFile = NewFileName "index.html" }
         { Script = "about.fsx"; Trigger = Once; OutputFile = NewFileName "about.html" }
-        { Script = "archive.fsx"; Trigger = Once; OutputFile = NewFileName "posts/index.html" }
+        { Script = "archive.fsx"; Trigger = Once; OutputFile = NewFileName "archive.html" }
         { Script = "taglist.fsx"; Trigger = Once; OutputFile = NewFileName "tags/index.html"}
     ]
 }
