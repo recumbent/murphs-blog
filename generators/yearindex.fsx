@@ -3,6 +3,7 @@
 
 open System
 open Html
+open Layout
 
 let generateYears (ctx : SiteContents) (year: Postloader.YearIndex) =
     let filter year (date: DateTime option) = 
@@ -14,18 +15,13 @@ let generateYears (ctx : SiteContents) (year: Postloader.YearIndex) =
         |> Option.defaultValue Seq.empty
         |> Seq.filter (fun p -> filter year.year p.published)
 
-    let published (post: Postloader.Post) =
-        post.published
-        |> Option.defaultValue System.DateTime.MinValue
-        |> fun n -> n.ToString("yyyy-MM-dd")
-
     let postList =
         posts
         |> Seq.sortByDescending published
         |> Seq.toList
         |> List.map (fun post ->
             li [] [
-                a [Href post.link] [!! (sprintf "%s - %s" (published post) post.title)]
+                makeLink post
             ]
         )
 

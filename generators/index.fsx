@@ -2,14 +2,10 @@
 #load "layout.fsx"
 
 open Html
+open Layout
 
 let generate' (ctx : SiteContents) (page: string) =
     let posts = ctx.TryGetValues<Postloader.Post> () |> Option.defaultValue Seq.empty
-
-    let published (post: Postloader.Post) =
-        post.published
-        |> Option.defaultValue System.DateTime.Now
-        |> fun n -> n.ToString("yyyy-MM-dd")
         
     let postList =
         posts
@@ -17,7 +13,7 @@ let generate' (ctx : SiteContents) (page: string) =
         |> Seq.toList
         |> List.map (fun post ->
             li [] [
-                a [Href post.link] [!! (sprintf "%s - %s" (published post) post.title)]
+                makeLink post
             ]
         )
 

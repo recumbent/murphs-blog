@@ -2,6 +2,24 @@
 
 open Html
 
+// Layout helpers
+
+let published (post: Postloader.Post) =
+    post.published
+    |> Option.defaultValue System.DateTime.MinValue
+    |> fun n -> n.ToString("yyyy-MM-dd")
+
+let makePath (post: Postloader.Post) = 
+    post.link
+
+let makeTitle (post : Postloader.Post) =
+    sprintf "%s - %s" (published post) post.title
+
+let makeLink (post: Postloader.Post) = 
+      a [Href (makePath post)] [!! (makeTitle post)]
+
+// Layout common
+
 let injectWebsocketCode (webpage:string) =
     let websocketScript =
         """
