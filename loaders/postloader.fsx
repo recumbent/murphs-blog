@@ -13,7 +13,7 @@ type Post = {
     link : string
     title: string
     author: string option
-    published: System.DateTime option
+    published: System.DateTime
     tags: string list
     content: string
 }
@@ -102,7 +102,7 @@ let loadFile n =
       link = link
       title = title
       author = author
-      published = published
+      published = published |> Option.defaultValue DateTime.Today
       tags = tags
       content = content }
 
@@ -129,13 +129,8 @@ let processMonthIndex (siteContent: SiteContents) (date: DateTime) =
 // So not functional... side effects all day...
 let processPost (siteContent: SiteContents) (post: Post) =
     siteContent.Add post
-
-    match post.published with
-    | Some date -> 
-        processYearIndex siteContent date
-        processMonthIndex siteContent date
-    | None -> ()
-    
+    processYearIndex siteContent post.published
+    processMonthIndex siteContent post.published
 
 let loader (projectRoot: string) (siteContent: SiteContents) =
     let postsPath = System.IO.Path.Combine(projectRoot, "posts")
@@ -144,5 +139,4 @@ let loader (projectRoot: string) (siteContent: SiteContents) =
     |> Array.map loadFile
     |> Array.iter (fun p -> processPost siteContent p)
 
-    siteContent.Add({disableLiveRefresh = true})
     siteContent

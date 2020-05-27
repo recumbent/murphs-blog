@@ -6,8 +6,7 @@ open Html
 open Layout
 
 let generateYears (ctx : SiteContents) (year: Postloader.YearIndex) =
-    let filter year (date: DateTime option) = 
-        let date = Option.defaultValue DateTime.MinValue date
+    let filter year (date: DateTime) = 
         date.Year = year
 
     let posts = 

@@ -5,9 +5,7 @@ open Html
 // Layout helpers
 
 let published (post: Postloader.Post) =
-    post.published
-    |> Option.defaultValue System.DateTime.MinValue
-    |> fun n -> n.ToString("yyyy-MM-dd")
+    post.published.ToString("yyyy-MM-dd")
 
 let makePath (post: Postloader.Post) = 
     post.link

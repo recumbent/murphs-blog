@@ -66,3 +66,62 @@ That also means we need to make an addition to the list of filters for static co
 ```
 
 without this build will make a literal copy of any draft posts (which will then get published)
+
+### _Not_ fixing the watch issue
+
+At this point I got lost - actually I had a lot of fun exploring the possibilities of de-dupication and other things but in so doing I ended up in a completely broken state (to do this I need to do that which leads to something else). It turns out that I don't know enough about how F# scripts behave yet, and I suspect that my development process could be better - that in particular I'm not making enough use of the REPL to test my code. That's definitely a story I need to explorer further.
+
+Instead I took a bit of guidance from the [Mikado method](https://pragprog.com/magazines/2010-06/the-mikado-method) and threw away (well branched away) my work and did a hard reset.
+
+I'm going to park the watch issue for bit to continue with my original goal of fixing the folder structure.
+
+## Fixing the folder structure
+
+### 1. There has to be a date
+
+First decision is to make the published date on a post mandatory - if there's no published date in the front matter (there won't be if its a draft) use "Today". I can do this because its my bat and my ball and that rule fits my needs. Published in a post becomes:
+
+```fsharp
+    published: System.DateTime
+```
+
+That triggers a whole load of things that need to be fixed, which in turn makes them less complicated
+
+When creating the post to be stored in the content we need to map from an option
+
+```fsharp
+      published = published |> Option.defaultValue DateTime.Today
+```
+
+We no longer have to worry about the optin in `processPost` giving:
+
+```fsharp
+let processPost (siteContent: SiteContents) (post: Post) =
+    siteContent.Add post
+    processYearIndex siteContent post.published
+    processMonthIndex siteContent post.published
+```
+
+I can also remove `siteContent.Add({disableLiveRefresh = true})` from the `loader` function as we don't work that way any more.
+
+### 2. Everything is broken
+
+Turns out that published - as an option - is referenced a lot...
+
+I have this function in several places:
+
+```fsharp
+let published (post: Postloader.Post) =
+    post.published
+    |> Option.defaultValue System.DateTime.MinValue
+    |> fun n -> n.ToString("yyyy-MM-dd")
+```
+
+We want to reduce the number of places but as published is no longer an option we can simplify this to the following wherever we find it:
+
+```fsharp
+let published (post: Postloader.Post) =
+    post.published.ToString("yyyy-MM-dd")
+```
+
+And similarly everywhere else we reference published

@@ -6,8 +6,7 @@ open Html
 open Layout
 
 let generateMonth (ctx : SiteContents) (month: Postloader.MonthIndex) =
-    let filter year month (date: DateTime option) = 
-        let date = Option.defaultValue DateTime.MinValue date
+    let filter year month (date: DateTime) = 
         date.Year = year && date.Month = month
 
     let posts = 

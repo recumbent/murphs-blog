@@ -17,9 +17,7 @@ let generate' (ctx : SiteContents) (page: string) =
         |> Option.defaultValue ""
 
     let published (post: Postloader.Post) =
-        post.published
-        |> Option.defaultValue System.DateTime.Now
-        |> fun n -> n.ToString("yyyy-MM-dd")
+        post.published.ToString("yyyy-MM-dd")
 
     let titleBlock = div [] [
         h1 [Class "titleblock"] [!! post.title]
