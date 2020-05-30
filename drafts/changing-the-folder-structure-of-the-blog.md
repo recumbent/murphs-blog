@@ -162,3 +162,24 @@ Which leaves me using
 ```
 
 And with that able to change the way I put the title together in a single location. I want to do something better with tags (and the author) but that's for another day.
+
+### 3. Links are broken now
+
+I've moved the files around, but I haven't changed the link creation logic. The logic for link generation is in `postloader.fsx` and also to some extent in the generators `yearindex.fsx` and `monthindex.fsx` - not sure if I can tidy this all up.
+
+The particular challenge is that we create the path in two different contexts, one is purely from the filename in `config.fsx` and the other is for links as part of generation, that said we've addressed the first part so we'll not worry too much.
+
+Remove link from the model in `postloader.fsx` as it is no longer needed.
+
+Change the `makePath` method in `layout.fsx` to:
+
+```fsharp
+let makePath (post: Postloader.Post) = 
+    sprintf "/%04i/$%02i/%02i/%s.html" post.published.Year post.published.Month post.published.Day post.title
+```
+
+### 3. Watch is _still_ broken
+
+My problem with watch is that I can't find drafts when attempting to render them as a post.
+
+To fix this I'm going to remove the extras from the value stored for "file" which in turn is the key used to find the data during the generation phase.

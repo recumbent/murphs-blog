@@ -10,7 +10,6 @@ type PostConfig = {
 
 type Post = {
     file: string
-    link : string
     title: string
     author: string option
     published: System.DateTime
@@ -72,7 +71,6 @@ let loadFile n =
     let content = getContent text
 
     let file = System.IO.Path.Combine("posts", (n |> System.IO.Path.GetFileNameWithoutExtension) + ".md").Replace("\\", "/")
-    let link = "/" + System.IO.Path.Combine("posts", (n |> System.IO.Path.GetFileNameWithoutExtension) + ".html").Replace("\\", "/")
 
     let title = config |> List.find (fun n -> n.ToLower().StartsWith "title" ) |> fun n -> n.Split(':').[1] |> trimString
 
@@ -99,7 +97,6 @@ let loadFile n =
         | _ -> []
 
     { file = file
-      link = link
       title = title
       author = author
       published = published |> Option.defaultValue DateTime.Today

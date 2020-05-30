@@ -8,8 +8,8 @@ let published (post: Postloader.Post) =
     post.published.ToString("yyyy-MM-dd")
 
 let makePath (post: Postloader.Post) = 
-    post.link
-
+    sprintf "/%04i/$%02i/%02i/%s.html" post.published.Year post.published.Month post.published.Day post.title
+    
 let makeTitle (post : Postloader.Post) =
     sprintf "%s - %s" (published post) post.title
 
