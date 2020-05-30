@@ -1,8 +1,9 @@
 ---
+published: 2020-05-30
 layout: post
 title: Changing the folder structure of the blog
 author: @recumbent
-tags:
+tags: fornax
 ---
 
 One of the things I want is for the posts and the folder structure to be inherently discoverable. I'm some way there - but not quite where I wanted and in looking at what I've already done its clear to me that the `posts` folder is redundant. Similarly if I'm doing this "right" I do need to have a folder for each date (for all that I don't expect to publish multiple posts on the same day)
