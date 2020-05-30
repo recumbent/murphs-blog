@@ -2,6 +2,7 @@
 #load "layout.fsx"
 
 open Html
+open Layout
 
 
 let generate' (ctx : SiteContents) (page: string) =
@@ -16,11 +17,8 @@ let generate' (ctx : SiteContents) (page: string) =
         |> Option.map (fun si -> si.description)
         |> Option.defaultValue ""
 
-    let published (post: Postloader.Post) =
-        post.published.ToString("yyyy-MM-dd")
-
     let titleBlock = div [] [
-        h1 [Class "titleblock"] [!! post.title]
+        h1 [Class "titleblock"] [!! (makeTitle post)]
         span [Class "title-meta"] [!! (sprintf "Author: %s, published: %s, tags: %A" (post.author |> Option.defaultValue "unknown") (published post) post.tags)]
     ]
     

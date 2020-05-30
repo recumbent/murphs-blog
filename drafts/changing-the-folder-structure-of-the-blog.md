@@ -124,4 +124,41 @@ let published (post: Postloader.Post) =
     post.published.ToString("yyyy-MM-dd")
 ```
 
-And similarly everywhere else we reference published
+And similarly everywhere else we reference published, which allows build to work again
+
+### 3. De duplication of links to posts
+
+I have something like the following in at least 3 places in the code:
+
+```fsharp
+    a [Href post.link] [!! (sprintf "%s - %s" (published post) post.title)]
+```
+
+There's scope there for a bit of de-duplication, first we push `published` into layout, then we add a new function in layout
+
+```fsharp
+let makeTitle (post : Postloader.Post) =
+    sprintf "%s - %s" (published post) post.title
+```
+
+For now we'll keep the `Href` pointing to `post.link` (although that's going to be wrong - I need to fix that) but to be consistent lets wrap that in a function too:
+
+```fsharp
+let makePath (post: Postloader.Post) = 
+    post.link
+```
+
+And finally we can have a function for the whole `<a>...</a>`:
+
+```fsharp
+let makeLink (post: Postloader.Post) = 
+      a [Href (makePath post)] [!! (makeTitle post)]
+```
+
+Which leaves me using
+
+```fsharp
+    makeLink post
+```
+
+And with that able to change the way I put the title together in a single location. I want to do something better with tags (and the author) but that's for another day.
