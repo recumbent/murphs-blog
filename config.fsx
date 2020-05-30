@@ -37,7 +37,7 @@ let makePostPath (date : string) title =
     let newPath = sprintf "%s/%s/%s/%s" dateParts.[0] dateParts.[1] dateParts.[2] title
     Path.ChangeExtension (newPath, "html" )
     
-let postRename page =
+let postRename (page : string) =
     let elements = page.ToLower().Split '/'
     let root = elements.[0]
     match root with
