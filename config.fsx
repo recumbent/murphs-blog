@@ -38,7 +38,6 @@ let makePostPath (date : string) title =
     Path.ChangeExtension (newPath, "html" )
     
 let postRename page =
-    printfn "Renaming: %s" page
     let elements = page.ToLower().Split '/'
     let root = elements.[0]
     match root with
