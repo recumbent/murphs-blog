@@ -3,10 +3,10 @@
 
 open System
 open Html
+open Layout
 
 let generateMonth (ctx : SiteContents) (month: Postloader.MonthIndex) =
-    let filter year month (date: DateTime option) = 
-        let date = Option.defaultValue DateTime.MinValue date
+    let filter year month (date: DateTime) = 
         date.Year = year && date.Month = month
 
     let posts = 
@@ -14,18 +14,13 @@ let generateMonth (ctx : SiteContents) (month: Postloader.MonthIndex) =
         |> Option.defaultValue Seq.empty
         |> Seq.filter (fun p -> filter month.year month.month p.published)
 
-    let published (post: Postloader.Post) =
-        post.published
-        |> Option.defaultValue System.DateTime.MinValue
-        |> fun n -> n.ToString("yyyy-MM-dd")
-
     let postList =
         posts
         |> Seq.sortByDescending published
         |> Seq.toList
         |> List.map (fun post ->
             li [] [
-                a [Href post.link] [!! (sprintf "%s - %s" (published post) post.title)]
+                makeLink post
             ]
         )
 
