@@ -70,8 +70,8 @@ let loadFile n =
 
     let content = getContent text
 
-    let file = System.IO.Path.Combine("posts", (n |> System.IO.Path.GetFileNameWithoutExtension) + ".md").Replace("\\", "/")
-
+    let file = (n.ToLower() |> System.IO.Path.GetFileNameWithoutExtension)
+    
     let title = config |> List.find (fun n -> n.ToLower().StartsWith "title" ) |> fun n -> n.Split(':').[1] |> trimString
 
     let author =
@@ -129,11 +129,18 @@ let processPost (siteContent: SiteContents) (post: Post) =
     processYearIndex siteContent post.published
     processMonthIndex siteContent post.published
 
-let loader (projectRoot: string) (siteContent: SiteContents) =
-    let postsPath = System.IO.Path.Combine(projectRoot, "posts")
+let loader' (projectRoot: string) (postsFolder: string) (siteContent: SiteContents) =
+    let postsPath = System.IO.Path.Combine(projectRoot, postsFolder)
     System.IO.Directory.GetFiles postsPath
     |> Array.filter (fun n -> n.EndsWith ".md")
     |> Array.map loadFile
     |> Array.iter (fun p -> processPost siteContent p)
 
     siteContent
+
+let loader (projectRoot: string) (siteContent: SiteContents) =
+    loader' projectRoot "posts" siteContent
+#if WATCH
+    // Add content from the drafts folder too
+    |> loader' projectRoot "drafts" 
+#endif

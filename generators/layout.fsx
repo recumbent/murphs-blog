@@ -8,7 +8,11 @@ let published (post: Postloader.Post) =
     post.published.ToString("yyyy-MM-dd")
 
 let makePath (post: Postloader.Post) = 
-    sprintf "/%04i/$%02i/%02i/%s.html" post.published.Year post.published.Month post.published.Day post.title
+    let file = 
+      if post.file.StartsWith((published post))
+      then post.file.Substring(11)
+      else post.file
+    sprintf "/%04i/%02i/%02i/%s.html" post.published.Year post.published.Month post.published.Day file
     
 let makeTitle (post : Postloader.Post) =
     sprintf "%s - %s" (published post) post.title

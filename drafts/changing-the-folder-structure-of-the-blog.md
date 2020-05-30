@@ -175,11 +175,104 @@ Change the `makePath` method in `layout.fsx` to:
 
 ```fsharp
 let makePath (post: Postloader.Post) = 
-    sprintf "/%04i/$%02i/%02i/%s.html" post.published.Year post.published.Month post.published.Day post.title
+    sprintf "/%04i/%02i/%02i/%s.html" post.published.Year post.published.Month post.published.Day post.file
 ```
 
-### 3. Watch is _still_ broken
+### 4. Watch is _still_ broken
 
 My problem with watch is that I can't find drafts when attempting to render them as a post.
 
 To fix this I'm going to remove the extras from the value stored for "file" which in turn is the key used to find the data during the generation phase.
+
+So we change parsing of `file` in `postloader.fsx` to be just
+
+```fsharp
+    let file = (n |> System.IO.Path.GetFileNameWithoutExtension)
+```
+
+Then change the post lookup logic in the generator `post.fsx` to:
+
+```fsharp
+    let file = (page |> System.IO.Path.GetFileNameWithoutExtension)
+
+    let post =
+        ctx.TryGetValues<Postloader.Post> ()
+        |> Option.defaultValue Seq.empty
+        |> Seq.find (fun n -> n.file = file)
+```
+
+Of course this now tells me that I'm not actually loading the drafts in the first place 😭
+
+### 5. Don't forget to load the drafts
+
+The code just looks at the posts folder, but we want it to look in the drafts folder as well (assuming there is one). To achieve this we tweak `postloader.fsx` so that the `loader` function looks like this:
+
+```fsharp
+let loader' (projectRoot: string) (postsFolder: string) (siteContent: SiteContents) =
+    let postsPath = System.IO.Path.Combine(projectRoot, postsFolder)
+    System.IO.Directory.GetFiles postsPath
+    |> Array.filter (fun n -> n.EndsWith ".md")
+    |> Array.map loadFile
+    |> Array.iter (fun p -> processPost siteContent p)
+
+    siteContent
+
+let loader (projectRoot: string) (siteContent: SiteContents) =
+    loader' projectRoot "posts" siteContent
+#if WATCH
+    // Add content from the drafts folder too
+    |> loader' projectRoot "drafts" 
+#endif
+```
+
+And magically watch will - or at least should - work as designed!
+
+### 6. But the links are still wrong
+
+I've outsmarted myself, a bit, the file part of a published post includes the date - to make my life easier in finding things and maintaining the site. I'm not removing that part when I create a link even though I am when creating the path to the published file.
+
+To resolve this, for now, I'm going to take a fairly direct approach and change `makePath` in `layout.fsx` strip the date from the front if there is a date at the front
+
+```fsharp
+let makePath (post: Postloader.Post) = 
+    let file = 
+      if post.file.StartsWith((published post))
+      then post.file.Substring(11)
+      else post.file
+    sprintf "/%04i/%02i/%02i/%s.html" post.published.Year post.published.Month post.published.Day file
+```
+
+And finally (!) we get to a point where I'm happy
+
+### 7. One last thing
+
+The paths for the urls should be all lower case, they're not because of the way I've worked things so far so to ensure that's the case I need to make a couple of tweaks
+
+In `postloader.fsx` when setting `file` force the input to lower case:
+
+```fsharp
+    let file = (n.ToLower() |> System.IO.Path.GetFileNameWithoutExtension)
+```
+
+And then we need to do the same in `post.fsx` when looking for the post to match a page:
+
+```fsharp
+    let file = (page.ToLower() |> System.IO.Path.GetFileNameWithoutExtension)
+
+    let post =
+        ctx.TryGetValues<Postloader.Post> ()
+        |> Option.defaultValue Seq.empty
+        |> Seq.find (fun n -> n.file = file)
+```
+
+And at this point I need to stop with this round of changes!
+
+## That was harder than it seemed at the start
+
+As a conclusion to all the above, I thought I was making a simple change, and it kinda just snowballed on me - this is the "joy" of software development.
+
+I'm doing this for "fun", and to learn, so perhaps it doesn't matter - but this snowball effect is something one has to be aware of. Its why the Mikado method is really interesting. I doubt anyone will read to here... but the reason I've published this is to show (myself at least) how these things happen.
+
+Murph
+
+

@@ -6,10 +6,13 @@ open Layout
 
 
 let generate' (ctx : SiteContents) (page: string) =
+
+    let file = (page.ToLower() |> System.IO.Path.GetFileNameWithoutExtension)
+
     let post =
         ctx.TryGetValues<Postloader.Post> ()
         |> Option.defaultValue Seq.empty
-        |> Seq.find (fun n -> n.file = page)
+        |> Seq.find (fun n -> n.file = file)
 
     let siteInfo = ctx.TryGetValue<Globalloader.SiteInfo> ()
     let desc =
