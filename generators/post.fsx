@@ -2,13 +2,17 @@
 #load "layout.fsx"
 
 open Html
+open Layout
 
 
 let generate' (ctx : SiteContents) (page: string) =
+
+    let file = (page.ToLower() |> System.IO.Path.GetFileNameWithoutExtension)
+
     let post =
         ctx.TryGetValues<Postloader.Post> ()
         |> Option.defaultValue Seq.empty
-        |> Seq.find (fun n -> n.file = page)
+        |> Seq.find (fun n -> n.file = file)
 
     let siteInfo = ctx.TryGetValue<Globalloader.SiteInfo> ()
     let desc =
@@ -16,13 +20,8 @@ let generate' (ctx : SiteContents) (page: string) =
         |> Option.map (fun si -> si.description)
         |> Option.defaultValue ""
 
-    let published (post: Postloader.Post) =
-        post.published
-        |> Option.defaultValue System.DateTime.Now
-        |> fun n -> n.ToString("yyyy-MM-dd")
-
     let titleBlock = div [] [
-        h1 [Class "titleblock"] [!! post.title]
+        h1 [Class "titleblock"] [!! (makeTitle post)]
         span [Class "title-meta"] [!! (sprintf "Author: %s, published: %s, tags: %A" (post.author |> Option.defaultValue "unknown") (published post) post.tags)]
     ]
     

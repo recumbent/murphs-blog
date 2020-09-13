@@ -2,6 +2,26 @@
 
 open Html
 
+// Layout helpers
+
+let published (post: Postloader.Post) =
+    post.published.ToString("yyyy-MM-dd")
+
+let makePath (post: Postloader.Post) = 
+    let file = 
+      if post.file.StartsWith((published post))
+      then post.file.Substring(11)
+      else post.file
+    sprintf "/%04i/%02i/%02i/%s.html" post.published.Year post.published.Month post.published.Day file
+    
+let makeTitle (post : Postloader.Post) =
+    sprintf "%s - %s" (published post) post.title
+
+let makeLink (post: Postloader.Post) = 
+      a [Href (makePath post)] [!! (makeTitle post)]
+
+// Layout common
+
 let injectWebsocketCode (webpage:string) =
     let websocketScript =
         """
@@ -62,8 +82,9 @@ let layout (ctx : SiteContents) active bodyContent =
     ]
 
 let render (ctx : SiteContents) content =
-  let disableLiveRefresh = ctx.TryGetValue<Postloader.PostConfig> () |> Option.map (fun n -> n.disableLiveRefresh) |> Option.defaultValue false
   content
   |> HtmlElement.ToString
-  |> fun n -> if disableLiveRefresh then n else injectWebsocketCode n
+#if WATCH
+  |> injectWebsocketCode
+#endif
    

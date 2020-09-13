@@ -10,10 +10,9 @@ type PostConfig = {
 
 type Post = {
     file: string
-    link : string
     title: string
     author: string option
-    published: System.DateTime option
+    published: System.DateTime
     tags: string list
     content: string
 }
@@ -71,9 +70,8 @@ let loadFile n =
 
     let content = getContent text
 
-    let file = System.IO.Path.Combine("posts", (n |> System.IO.Path.GetFileNameWithoutExtension) + ".md").Replace("\\", "/")
-    let link = "/" + System.IO.Path.Combine("posts", (n |> System.IO.Path.GetFileNameWithoutExtension) + ".html").Replace("\\", "/")
-
+    let file = (n.ToLower() |> System.IO.Path.GetFileNameWithoutExtension)
+    
     let title = config |> List.find (fun n -> n.ToLower().StartsWith "title" ) |> fun n -> n.Split(':').[1] |> trimString
 
     let author =
@@ -99,10 +97,9 @@ let loadFile n =
         | _ -> []
 
     { file = file
-      link = link
       title = title
       author = author
-      published = published
+      published = published |> Option.defaultValue DateTime.Today
       tags = tags
       content = content }
 
@@ -129,20 +126,21 @@ let processMonthIndex (siteContent: SiteContents) (date: DateTime) =
 // So not functional... side effects all day...
 let processPost (siteContent: SiteContents) (post: Post) =
     siteContent.Add post
+    processYearIndex siteContent post.published
+    processMonthIndex siteContent post.published
 
-    match post.published with
-    | Some date -> 
-        processYearIndex siteContent date
-        processMonthIndex siteContent date
-    | None -> ()
-    
-
-let loader (projectRoot: string) (siteContent: SiteContents) =
-    let postsPath = System.IO.Path.Combine(projectRoot, "posts")
+let loader' (projectRoot: string) (postsFolder: string) (siteContent: SiteContents) =
+    let postsPath = System.IO.Path.Combine(projectRoot, postsFolder)
     System.IO.Directory.GetFiles postsPath
     |> Array.filter (fun n -> n.EndsWith ".md")
     |> Array.map loadFile
     |> Array.iter (fun p -> processPost siteContent p)
 
-    siteContent.Add({disableLiveRefresh = true})
     siteContent
+
+let loader (projectRoot: string) (siteContent: SiteContents) =
+    loader' projectRoot "posts" siteContent
+#if WATCH
+    // Add content from the drafts folder too
+    |> loader' projectRoot "drafts" 
+#endif
