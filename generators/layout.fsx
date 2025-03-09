@@ -55,20 +55,20 @@ let layout (ctx : SiteContents) active bodyContent =
             link [Rel "stylesheet"; Href "/highlight/styles/darcula.css"]
             script [Src "/highlight/highlight.pack.js"] []
             script [] [!! "hljs.initHighlightingOnLoad();"] 
-        ]
+        ] 
         body [] [
             header [] [
               section [Class "hero"] [
                 div [Class "content hero-title"] [!! "Murph's random witterings"]
               ]
               nav [Class "content"] [
-                a [Href "/"][!! "Home"]
+                a [Href "/"] [!! "Home"]
                 span [] [!! " | "]
-                a [Href "/posts"][!! "Archive"]
+                a [Href "/posts"] [!! "Archive"]
                 span [] [!! " | "]
-                a [Href "/tags"][!! "Tags"]
+                a [Href "/tags"] [!! "Tags"]
                 span [] [!! " | "]
-                a [Href "/about.html"][!! "About"]
+                a [Href "/about.html"] [!! "About"]
               ]
             ]
             section [Class "content"] [
