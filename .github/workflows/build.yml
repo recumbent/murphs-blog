@@ -14,14 +14,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v1.5
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: 9.0.2
     - name: Install dependencies
       run: dotnet tool restore
     - name: Build
       run: dotnet fornax build
-    - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+    - name: Upload
+      uses: bacongobbler/azure-blob-storage-upload@v3.0.0 
       with:
         source_dir: '_public'
         container_name: '$web'
